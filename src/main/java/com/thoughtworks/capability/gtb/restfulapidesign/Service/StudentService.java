@@ -15,15 +15,20 @@ public class StudentService {
     public StudentService() {
     }
 
-    public List<Student> getStudents(Gender gender) {
-        return gender == null ? studentRepository.getStudents() : studentRepository.getByGender(gender);
+    public List<Student> getStudents() {
+        return studentRepository.getStudents();
+    }
+
+    public List<Student> getStudentsByGender(Gender gender) {
+        return  studentRepository.getByGender(gender);
     }
 
     public Student getStudentById(int id) throws StudentNotExistException {
-        return studentRepository.findById(id);
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotExistException("用户不存在"));
     }
 
-    public void deleteStudentById(int id) throws StudentNotExistException {
+    public void deleteStudentById(int id) {
         studentRepository.deleteById(id);
     }
 
@@ -32,6 +37,13 @@ public class StudentService {
     }
 
     public Student updateStudent(int id, Student student) throws StudentNotExistException {
-        return studentRepository.updateById(id, student);
+        Student findStudent = studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotExistException("用户不存在"));
+
+        findStudent.setName(student.getName());
+        findStudent.setGender(student.getGender());
+        findStudent.setNote(student.getNote());
+        studentRepository.update(findStudent);
+        return findStudent;
     }
 }

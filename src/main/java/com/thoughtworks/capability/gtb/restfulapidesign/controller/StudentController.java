@@ -19,8 +19,8 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getStudents(@RequestParam(required = false) Gender gender){
-        return studentService.getStudents(gender);
+    public List<Student> getStudents(@RequestParam(required = false) Gender gender) {
+        return gender == null ? studentService.getStudents() : studentService.getStudentsByGender(gender);
     }
 
     @GetMapping("/{id}")
@@ -41,7 +41,7 @@ public class StudentController {
 
     @PutMapping("/{id}")
     public Student updateStudent(@PathVariable int id, @RequestBody Student student) throws StudentNotExistException {
-        return studentService.updateStudent(id,student);
+        return studentService.updateStudent(id, student);
     }
 }
 
