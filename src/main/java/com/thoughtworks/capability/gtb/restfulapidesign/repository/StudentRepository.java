@@ -11,9 +11,9 @@ public class StudentRepository {
     private static Integer id = 0;
     private final static Map<Integer, Student> studentMap = new HashMap<>();
     static {
-        studentMap.put(++id, new Student(id, "stu1", Gender.MALE, "haha"));
-        studentMap.put(++id, new Student(id, "stu2", Gender.MALE, "haha"));
-        studentMap.put(++id, new Student(id, "stu3", Gender.MALE, "haha"));
+        for (int i = 0; i < 9; i++) {
+            studentMap.put(++id, new Student(id, String.format("student %s", id), Gender.MALE, "haha"));
+        }
     }
 
     public List<Student> getStudents() {
